@@ -1,15 +1,27 @@
-import { useState } from "react";
-import { CodeEditor } from "react-live-runner";
+import React, { useMemo, useState } from "react";
 import Header from "./components/Header";
 import { initialCode } from "./utils/data";
 import Preview from "./components/Preview";
-import { useLiveRunner } from "react-live-runner";
+import { useLiveRunner,CodeEditor } from "react-live-runner";
+import * as LucideReact from 'lucide-react'
+import * as Recharts from 'recharts'
 
 function App() {
   const [activeTab, setActiveTab] = useState("code");
 
+  const scope = useMemo(()=> {
+    return {
+           import: {
+        react: React,
+        recharts: Recharts,
+        'lucide-react': LucideReact
+      }
+    }
+  }, [])
+
   const { element, code, error, onChange } = useLiveRunner({
     initialCode,
+    scope
   });
 
   return (
@@ -22,7 +34,7 @@ function App() {
             <CodeEditor value={code} onChange={onChange}></CodeEditor>
           ) : (
             <Preview code={code} element={element} error={error} />
-          )}
+          )} 
         </div>
       </div>
     </div>
